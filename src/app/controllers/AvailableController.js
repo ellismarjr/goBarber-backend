@@ -4,8 +4,8 @@ import {
   setHours,
   setMinutes,
   setSeconds,
-  format,
   isAfter,
+  format,
 } from 'date-fns';
 import { Op } from 'sequelize';
 
@@ -55,7 +55,7 @@ class AvailableController {
 
       return {
         time,
-        value: format(value, "yyyy-MM-dd'T'HH:mm:ssxxx"),
+        value: format(value, "yyyy-MM-dd'T'HH:mm:ss"),
         available:
           isAfter(value, new Date()) &&
           !appointments.find(a => format(a.date, 'HH:mm') === time),

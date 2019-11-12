@@ -1,6 +1,14 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
+import {
+  startOfHour,
+  parseISO,
+  isBefore,
+  subHours,
+  addHours,
+  format,
+} from 'date-fns';
 import pt from 'date-fns/locale/pt';
+
 import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointment';
@@ -70,6 +78,10 @@ class AppointmentController {
         .json({ error: 'You can not create appointments to yourself' });
     }
 
+    // console.log('date', date);
+    // const dateSubHour = subHours(parseISO(date), 1);
+    // console.log('dateSubHour', dateSubHour);
+
     /**
      * Check past dates
      */
@@ -78,6 +90,9 @@ class AppointmentController {
       return res.status(400).json({ error: 'Past dates are not permitted' });
     }
 
+    const hourAddDate = addHours(hourStart, 1);
+    // console.log(hourAddDate);
+
     /**
      * Check data availability
      */
@@ -85,7 +100,7 @@ class AppointmentController {
       where: {
         provider_id,
         canceled_at: null,
-        date: hourStart,
+        date: hourAddDate,
       },
     });
 
